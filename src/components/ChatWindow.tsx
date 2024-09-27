@@ -20,7 +20,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
 	const [loading, setLoading] = useState(false);
 
 	const handleSendMessage = async () => {
-		// Prevent sending empty messages
+		// Prevents sending empty messages
 		if (userInput.trim() === "") return;
 
 		setMessages([...messages, `You: ${userInput}`]);
@@ -33,11 +33,11 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
 
 		const articles = await fetchOpenAlexArticles(queryURL);
 
-		// If the request fails, `articles` might be `undefined`. Handle gracefully.
+		// in case there's not articles related to the users query
 		if (!articles || articles.length === 0) {
 			setMessages((prevMessages) => [
 				...prevMessages,
-				"Keenie: No articles found based on your query.",
+				"Keenie: No articles found based on your query. Please try again",
 			]);
 		} else {
 			articles.forEach((article: Article) => {
@@ -48,7 +48,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
 			});
 		}
 
-		setLoading(false); // End loading state
+		setLoading(false);
 	};
 
 	return (
@@ -91,7 +91,6 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
 				))}
 			</List>
 
-			{/* Input field */}
 			<TextField
 				fullWidth
 				variant="standard"

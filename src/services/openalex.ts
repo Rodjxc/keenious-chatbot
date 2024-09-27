@@ -3,12 +3,12 @@ import type { Article } from "../types";
 
 export const fetchOpenAlexArticles = async (
 	queryURL: string,
-): Promise<Article> => {
+): Promise<Article[]> => {
 	try {
 		const response = await axios.get(queryURL);
-		return response.data.results; // Assuming the results are inside a 'results' property
+		return response.data.results || [];
 	} catch (error) {
 		console.error("Error fetching OpenAlex articles:", error);
-		throw new Error("Failed to fetch articles from OpenAlex.");
+		return [];
 	}
 };
