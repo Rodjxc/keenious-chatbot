@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { getChatGPTQueryURL } from "./../services/chatgpt";
 import { fetchOpenAlexArticles } from "../services/openalex";
-import type { ChatWindowProps } from "../types";
+import type { Article, ChatWindowProps } from "../types";
 
 export const ChatWindow: React.FC<ChatWindowProps> = ({
 	messages,
