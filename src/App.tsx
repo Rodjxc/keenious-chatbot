@@ -1,9 +1,12 @@
 import "./App.css";
+import { ChatBubble } from "./components/ChatBubble";
+import { LandingPage } from "./pages/LandingPage";
 
 export function App() {
 	return (
 		<>
-			<p>Keenious chatbot app</p>
+			<LandingPage />
+			<ChatBubble />{" "}
 		</>
 	);
 }
