@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { Dispatch, SetStateAction } from "react";
+
 import {
 	Paper,
 	TextField,
@@ -8,12 +8,9 @@ import {
 	ListItem,
 	Typography,
 } from "@mui/material";
-import { getChatGPTResponse } from "../services/chatgpt";
-
-interface ChatWindowProps {
-	messages: string[];
-	setMessages: Dispatch<SetStateAction<string[]>>;
-}
+import { getChatGPTQueryURL } from "./../services/chatgpt";
+import { fetchOpenAlexArticles } from "../services/openalex";
+import type { ChatWindowProps } from "../types";
 
 export const ChatWindow: React.FC<ChatWindowProps> = ({
 	messages,
@@ -23,16 +20,35 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
 	const [loading, setLoading] = useState(false);
 
 	const handleSendMessage = async () => {
-		//Prevents sending empty messages
+		// Prevent sending empty messages
 		if (userInput.trim() === "") return;
 
 		setMessages([...messages, `You: ${userInput}`]);
 		setUserInput("");
 		setLoading(true);
 
-		const response = await getChatGPTResponse(userInput);
-		setMessages((prevMessages) => [...prevMessages, `Keenie: ${response}`]);
-		setLoading(false);
+		const queryURL = await getChatGPTQueryURL(userInput);
+
+		if (!queryURL) return setLoading(false);
+
+		const articles = await fetchOpenAlexArticles(queryURL);
+
+		// If the request fails, `articles` might be `undefined`. Handle gracefully.
+		if (!articles || articles.length === 0) {
+			setMessages((prevMessages) => [
+				...prevMessages,
+				"Keenie: No articles found based on your query.",
+			]);
+		} else {
+			articles.forEach((article: Article) => {
+				setMessages((prevMessages) => [
+					...prevMessages,
+					`Title: ${article.title}\nYear: ${article.publication_year}\nCitations: ${article.cited_by_count}\nOpen Access: ${article.is_oa}`,
+				]);
+			});
+		}
+
+		setLoading(false); // End loading state
 	};
 
 	return (
@@ -83,6 +99,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
 				value={userInput}
 				onChange={(e) => setUserInput(e.target.value)}
 				onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
+				disabled={loading}
 			/>
 
 			<Button
