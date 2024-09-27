@@ -1,4 +1,5 @@
-import { type Dispatch, type SetStateAction, useState } from "react";
+import { useState } from "react";
+import type { Dispatch, SetStateAction } from "react";
 import {
 	Paper,
 	TextField,
@@ -7,6 +8,7 @@ import {
 	ListItem,
 	Typography,
 } from "@mui/material";
+import { getChatGPTResponse } from "../services/chatgpt";
 
 interface ChatWindowProps {
 	messages: string[];
@@ -18,18 +20,19 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
 	setMessages,
 }) => {
 	const [userInput, setUserInput] = useState("");
+	const [loading, setLoading] = useState(false);
 
-	const handleSendMessage = () => {
+	const handleSendMessage = async () => {
 		//Prevents sending empty messages
 		if (userInput.trim() === "") return;
 
-		// Append user message to chat
 		setMessages([...messages, `You: ${userInput}`]);
-
-		// Clear input field after sending a message
 		setUserInput("");
+		setLoading(true);
 
-		// TODO: Handle API calls here
+		const response = await getChatGPTResponse(userInput);
+		setMessages((prevMessages) => [...prevMessages, `Keenie: ${response}`]);
+		setLoading(false);
 	};
 
 	return (
@@ -88,7 +91,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
 				onClick={handleSendMessage}
 				sx={{ marginTop: "8px" }}
 			>
-				Ask
+				{loading ? "Loading..." : "Ask"}
 			</Button>
 		</Paper>
 	);
