@@ -3,8 +3,10 @@ import { Fab } from "@mui/material";
 import ChatIcon from "@mui/icons-material/Chat";
 import { ChatWindow } from "./ChatWindow";
 
-export const ChatBubble: React.FC = () => {
+export const ChatBubble = () => {
 	const [open, setOpen] = useState(false);
+
+	const [messages, setMessages] = useState<string[]>([]);
 
 	return (
 		<>
@@ -17,7 +19,7 @@ export const ChatBubble: React.FC = () => {
 				<ChatIcon />
 			</Fab>
 
-			{open && <ChatWindow />}
+			{open && <ChatWindow messages={messages} setMessages={setMessages} />}
 		</>
 	);
 };

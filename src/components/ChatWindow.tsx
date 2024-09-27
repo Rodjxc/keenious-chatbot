@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { type Dispatch, type SetStateAction, useState } from "react";
 import {
 	Paper,
 	TextField,
@@ -8,9 +8,16 @@ import {
 	Typography,
 } from "@mui/material";
 
-export const ChatWindow: React.FC = () => {
+interface ChatWindowProps {
+	messages: string[];
+	setMessages: Dispatch<SetStateAction<string[]>>;
+}
+
+export const ChatWindow: React.FC<ChatWindowProps> = ({
+	messages,
+	setMessages,
+}) => {
 	const [userInput, setUserInput] = useState("");
-	const [messages, setMessages] = useState<string[]>([]);
 
 	const handleSendMessage = () => {
 		//Prevents sending empty messages
@@ -42,18 +49,18 @@ export const ChatWindow: React.FC = () => {
 		>
 			<List
 				sx={{
-					flexGrow: 1, // Take up remaining space
-					overflowY: "auto", // Allow scrolling
-					marginBottom: "16px", // Add space between messages and input
+					flexGrow: 1,
+					overflowY: "auto",
+					marginBottom: "16px",
 					"&::-webkit-scrollbar": {
 						width: "8px",
 					},
 					"&::-webkit-scrollbar-thumb": {
-						backgroundColor: "purple", // Thumb color
+						backgroundColor: "purple",
 						borderRadius: "5px",
 					},
 					"&::-webkit-scrollbar-thumb:hover": {
-						backgroundColor: "gray", // Color when hovered
+						backgroundColor: "gray",
 					},
 				}}
 			>
