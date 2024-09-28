@@ -11,6 +11,7 @@ import {
 import { getChatGPTQueryURL } from "./../services/chatgpt";
 import { fetchOpenAlexArticles } from "../services/openalex";
 import type { Article, ChatWindowProps } from "../types";
+import { getSummarizedArticles } from "./../services/oaSummarize";
 
 export const ChatWindow: React.FC<ChatWindowProps> = ({
 	messages,
@@ -20,7 +21,6 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
 	const [loading, setLoading] = useState(false);
 
 	const handleSendMessage = async () => {
-		// Prevents sending empty messages
 		if (userInput.trim() === "") return;
 
 		setMessages([...messages, `You: ${userInput}`]);
@@ -31,22 +31,25 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
 
 		if (!queryURL) return setLoading(false);
 
-		const articles = await fetchOpenAlexArticles(queryURL);
+		const articles: Article[] = await fetchOpenAlexArticles(queryURL);
 
-		// in case there's not articles related to the users query
 		if (!articles || articles.length === 0) {
 			setMessages((prevMessages) => [
 				...prevMessages,
-				"Keenie: No articles found based on your query. Please try again",
+				"Keenie: No articles found based on your query.",
 			]);
-		} else {
-			articles.forEach((article: Article) => {
-				setMessages((prevMessages) => [
-					...prevMessages,
-					`Title: ${article.title}\nYear: ${article.publication_year}\nCitations: ${article.cited_by_count}\nOpen Access: ${article.is_oa}`,
-				]);
-			});
+			setLoading(false);
+			return;
 		}
+
+		// Summarize the articles using ChatGPT
+		const summarizedResponse = await getSummarizedArticles(articles);
+
+		// Add the summarized response to the chat
+		setMessages((prevMessages) => [
+			...prevMessages,
+			`Keenie: ${summarizedResponse}`,
+		]);
 
 		setLoading(false);
 	};
