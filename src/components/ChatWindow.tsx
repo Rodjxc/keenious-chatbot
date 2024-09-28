@@ -11,7 +11,6 @@ import {
 import { getChatGPTQueryURL } from "./../services/chatgpt";
 import { fetchOpenAlexArticles } from "../services/openalex";
 import type { Article, ChatWindowProps } from "../types";
-import { getSummarizedArticles } from "./../services/oaSummarize";
 
 export const ChatWindow: React.FC<ChatWindowProps> = ({
 	messages,
@@ -43,13 +42,9 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
 			return;
 		}
 
-		// Summarize the articles using ChatGPT
-		const summarizedResponse = await getSummarizedArticles(articles);
-
-		// Add the summarized response to the chat
 		setMessages((prevMessages) => [
 			...prevMessages,
-			`Keenie: ${summarizedResponse}`,
+			"Keenie: Sure, here's what I found! Please check the main page for the details",
 		]);
 
 		setArticles(articles);
