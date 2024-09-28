@@ -1,6 +1,6 @@
 import axios from "axios";
 
-//openAI endpoint according to their docs
+// OpenAI endpoint according to their docs
 const OPENAI_API_URL = "https://api.openai.com/v1/chat/completions";
 
 export const getChatGPTQueryURL = async (
@@ -15,9 +15,17 @@ export const getChatGPTQueryURL = async (
 					{
 						role: "system",
 						content:
-							"You are a helpful assistant that generates OpenAlex API URLs based on user queries for research articles. The API URL should include filters like 'default.search' for keywords, 'publication_year' for year-based filters, 'cited_by_count' for citation filters, and 'is_oa' for open access status. Your response should only include the valid OpenAlex API URL.",
+							"You are a chatbot that generates OpenAlex API URLs based on user queries for research articles. Follow these rules to ensure the correct format: " +
+							"In order to construct the OpenAlex compatible query, you have to use fitlers like: publication_year, cited_by_count, is_oa and default.seach" +
+							"- Use a comma ',' to separate different filters, not the pipe '|'. " +
+							"- For a range of publication years, use two filters: 'publication_year:>start_year' and 'publication_year:<end_year+1'. For example, 'publication_year:>2022,publication_year:<2025' to get results for 2023 and 2024. " +
+							"- Do not use '|' between different filter types like 'default.search' and 'publication_year'. " +
+							"Generate the OpenAlex query URL in the format: 'https://api.openalex.org/works?filter=<FILTERS>'. Return only the valid OpenAlex URL without any additional text or comments.",
 					},
-					{ role: "user", content: userMessage },
+					{
+						role: "user",
+						content: `Generate a suitable OpenAlex query URL for this message: "${userMessage}"`,
+					},
 				],
 			},
 			{
@@ -28,7 +36,6 @@ export const getChatGPTQueryURL = async (
 			},
 		);
 
-		// Return the generated URL
 		return response.data.choices[0].message.content.trim();
 	} catch (error) {
 		console.error("Error generating OpenAlex URL:", error);
