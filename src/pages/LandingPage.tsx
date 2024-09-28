@@ -11,7 +11,7 @@ import type { LandingPageProps } from "../types";
 export const LandingPage: React.FC<LandingPageProps> = ({ articles }) => {
 	if (!articles || articles.length === 0) {
 		return (
-			<Typography variant="h6">
+			<Typography variant="h6" sx={{ marginTop: "20%" }}>
 				Here will appear the list of articles. Try asking Keenie, our AI-driven
 				chatbot.
 			</Typography>
