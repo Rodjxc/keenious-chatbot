@@ -5,7 +5,7 @@ import {
 	Divider,
 	Typography,
 } from "@mui/material";
-import Grid from "@mui/material/Grid2";
+import Grid from "@mui/material/Grid";
 import type { LandingPageProps } from "../types";
 
 export const LandingPage: React.FC<LandingPageProps> = ({ articles }) => {
@@ -20,6 +20,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ articles }) => {
 
 	return (
 		<Container sx={{ padding: "40px", maxWidth: "1200px", margin: "0 auto" }}>
+			{/*Had to use the deprecated Grid, since I had issues with the Grid2 version of the docs*/}
 			<Grid container spacing={4} justifyContent="center">
 				{articles.map((article, index) => (
 					<Grid item xs={12} sm={6} md={4} key={index} sx={{ display: "flex" }}>
