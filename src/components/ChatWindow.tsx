@@ -16,6 +16,7 @@ import { getSummarizedArticles } from "./../services/oaSummarize";
 export const ChatWindow: React.FC<ChatWindowProps> = ({
 	messages,
 	setMessages,
+	setArticles,
 }) => {
 	const [userInput, setUserInput] = useState("");
 	const [loading, setLoading] = useState(false);
@@ -50,6 +51,8 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
 			...prevMessages,
 			`Keenie: ${summarizedResponse}`,
 		]);
+
+		setArticles(articles);
 
 		setLoading(false);
 	};
