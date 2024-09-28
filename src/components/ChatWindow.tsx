@@ -11,6 +11,7 @@ import {
 import { getChatGPTQueryURL } from "./../services/chatgpt";
 import { fetchOpenAlexArticles } from "../services/openalex";
 import type { Article, ChatWindowProps } from "../types";
+import { getSummarizedArticles } from "../services/oaSummarize";
 
 export const ChatWindow: React.FC<ChatWindowProps> = ({
 	messages,
@@ -27,12 +28,15 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
 		setUserInput("");
 		setLoading(true);
 
+		// Send the query to ChatGPT
 		const queryURL = await getChatGPTQueryURL(userInput);
 
 		if (!queryURL) return setLoading(false);
 
+		// Fetch articles from OpenAlex
 		const articles: Article[] = await fetchOpenAlexArticles(queryURL);
 
+		// If no articles found then...
 		if (!articles || articles.length === 0) {
 			setMessages((prevMessages) => [
 				...prevMessages,
@@ -42,12 +46,20 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
 			return;
 		}
 
-		setMessages((prevMessages) => [
-			...prevMessages,
-			"Keenie: Sure, here's what I found! Please check the main page for the details",
-		]);
+		// Fetch summarized articles (including intro and summaries)
+		const { intro, summaries } = await getSummarizedArticles(articles);
 
-		setArticles(articles);
+		// Display the intro message in the chat
+		setMessages((prevMessages) => [...prevMessages, `Keenie: ${intro}`]);
+
+		// Combine each article with its corresponding summary
+		const articlesWithSummaries = articles.map((article, index) => ({
+			...article,
+			summary: summaries[index] || "Summary not available.", // Pair each article with its summary by index
+		}));
+
+		// Update the articles state with summarized content to pass it to LandingPage
+		setArticles(articlesWithSummaries);
 
 		setLoading(false);
 	};

@@ -5,7 +5,7 @@ const OPENAI_API_URL = "https://api.openai.com/v1/chat/completions";
 
 export const getSummarizedArticles = async (
 	articles: Article[],
-): Promise<string> => {
+): Promise<{ intro: string; summaries: string[] }> => {
 	try {
 		const summaryPrompt = articles
 			.map(
@@ -42,7 +42,14 @@ export const getSummarizedArticles = async (
 			},
 		);
 
-		return response.data.choices[0].message.content.trim();
+		// Split the response into an introduction (chat gpt's response) and summaries
+		const responseContent = response.data.choices[0].message.content.trim();
+		const [intro, ...summaries] = responseContent.split("\n\n");
+
+		return {
+			intro,
+			summaries,
+		};
 	} catch (error) {
 		console.error("Error summarizing articles:", error);
 		throw new Error("Failed to generate article summary.");

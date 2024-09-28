@@ -1,4 +1,4 @@
-import { Card, CardContent, Container, Typography } from "@mui/material";
+import { Card, CardContent, Container, Link, Typography } from "@mui/material";
 import type { LandingPageProps } from "../types";
 
 export const LandingPage: React.FC<LandingPageProps> = ({ articles }) => {
@@ -12,9 +12,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ articles }) => {
 	}
 
 	return (
-		<Container sx={{ padding: "20px" }}>
+		<Container sx={{ padding: "40px" }}>
 			{articles.map((article, index) => (
-				<Card key={index} style={{ marginBottom: "20px" }}>
+				<Card key={index} sx={{ marginBottom: "20px" }}>
 					<CardContent>
 						<Typography variant="h6">{article.title}</Typography>
 						<Typography variant="body2">
@@ -25,6 +25,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ articles }) => {
 						</Typography>
 						<Typography variant="body2">
 							Open Access: {article.is_oa ? "Yes" : "No"}
+						</Typography>
+						<Typography variant="body2" sx={{ marginTop: "10px" }}>
+							{article.summary}
 						</Typography>
 					</CardContent>
 				</Card>
