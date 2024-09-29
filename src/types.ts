@@ -1,5 +1,7 @@
 import type { Dispatch, SetStateAction } from "react";
 
+//############  LandingPage    ##################
+
 // For main list of Articles in LandingPage
 export interface Article {
 	id: string;
@@ -8,6 +10,12 @@ export interface Article {
 	cited_by_count: number;
 	is_oa: boolean;
 	summary: string;
+}
+
+// For articles grid
+
+export interface ArticleGridProps {
+	articles: Article[];
 }
 
 // For Chat window
