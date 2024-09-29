@@ -34,7 +34,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
 		if (!articles || articles.length === 0) {
 			setMessages((prevMessages) => [
 				...prevMessages,
-				"Keenie: No articles found based on your query.",
+				"Keenie: Sorry, I couldn't find anything. Try being more specific and use filters like publication years or amount of citations",
 			]);
 			setLoading(false);
 			return;
@@ -97,7 +97,6 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
 					</ListItem>
 				))}
 			</List>
-
 			<TextField
 				fullWidth
 				variant="standard"
@@ -107,7 +106,6 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
 				onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
 				disabled={loading}
 			/>
-
 			<ChatbotButton onClick={handleSendMessage} loading={loading} />
 		</Paper>
 	);
