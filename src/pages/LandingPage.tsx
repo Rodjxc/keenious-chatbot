@@ -2,6 +2,7 @@ import { Container } from "@mui/material";
 import type { LandingPageProps } from "../types";
 import { ArticleGrid } from "../components/landingPage/ArticleGrid";
 import { Hero } from "../components/layout/Hero";
+import { Footer } from "../components/layout/Footer";
 
 export const LandingPage: React.FC<LandingPageProps> = ({ articles }) => (
 	<>
@@ -11,6 +12,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ articles }) => (
 				paddingY: "40px",
 				maxWidth: "1200px",
 				margin: "0 auto",
+				marginBottom: "6rem",
 			}}
 		>
 			{!articles || articles.length === 0 ? (
@@ -19,5 +21,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({ articles }) => (
 				<ArticleGrid articles={articles} />
 			)}
 		</Container>
+		<Footer />
 	</>
 );

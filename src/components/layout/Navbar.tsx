@@ -7,7 +7,7 @@ export const Navbar = () => {
 	return (
 		<AppBar position="static" color="transparent" elevation={0}>
 			<Container maxWidth="lg">
-				<Toolbar sx={{ justifyContent: "space-between" }}>
+				<Toolbar sx={{ justifyContent: "space-between", marginTop: "1rem" }}>
 					<Logo />
 					<Box display="flex" alignItems="center" gap={6}>
 						<Link href="#" underline="none" color="inherit">
