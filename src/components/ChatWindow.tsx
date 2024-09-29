@@ -1,17 +1,11 @@
 import { useState } from "react";
 
-import {
-	Paper,
-	TextField,
-	Button,
-	List,
-	ListItem,
-	Typography,
-} from "@mui/material";
+import { Paper, TextField, List, ListItem, Typography } from "@mui/material";
 import { getChatGPTQueryURL } from "./../services/chatgpt";
 import { fetchOpenAlexArticles } from "../services/openalex";
 import type { Article, ChatWindowProps } from "../types";
 import { getSummarizedArticles } from "../services/oaSummarize";
+import { ChatbotButton } from "./buttons/ChatbotButton";
 
 export const ChatWindow: React.FC<ChatWindowProps> = ({
 	messages,
@@ -114,14 +108,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
 				disabled={loading}
 			/>
 
-			<Button
-				variant="contained"
-				color="secondary"
-				onClick={handleSendMessage}
-				sx={{ marginTop: "8px" }}
-			>
-				{loading ? "Loading..." : "Ask"}
-			</Button>
+			<ChatbotButton onClick={handleSendMessage} loading={loading} />
 		</Paper>
 	);
 };
