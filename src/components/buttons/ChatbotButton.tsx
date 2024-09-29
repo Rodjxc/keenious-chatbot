@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 import type { ChatbotButtonProps } from "../../types";
 
 export const ChatbotButton: React.FC<ChatbotButtonProps> = ({
@@ -8,12 +8,21 @@ export const ChatbotButton: React.FC<ChatbotButtonProps> = ({
 	return (
 		<Button
 			variant="contained"
-			color="secondary"
 			onClick={onClick}
 			disabled={loading}
-			sx={{ marginTop: "8px" }}
+			sx={{ marginTop: "8px", backgroundColor: "#6030FF" }}
 		>
-			{loading ? "Hold tight, I'm looking for it" : "Ask me!"}
+			{loading ? (
+				<>
+					<CircularProgress
+						size={20}
+						sx={{ color: "white", marginRight: "8px" }}
+					/>
+					I'm looking for it...
+				</>
+			) : (
+				"Ask me!"
+			)}
 		</Button>
 	);
 };

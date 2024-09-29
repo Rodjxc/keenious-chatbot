@@ -100,12 +100,16 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
 			<TextField
 				fullWidth
 				variant="standard"
-				placeholder="Ask Keenie, our AI model"
+				placeholder="i.e: Show me artificial intelligence articles published after 2011"
 				value={userInput}
 				onChange={(e) => setUserInput(e.target.value)}
 				onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
 				disabled={loading}
+				multiline
+				minRows={2}
+				maxRows={3}
 			/>
+
 			<ChatbotButton onClick={handleSendMessage} loading={loading} />
 		</Paper>
 	);
