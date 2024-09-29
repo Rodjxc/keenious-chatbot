@@ -17,6 +17,7 @@ export const getChatGPTQueryURL = async (
 						content:
 							"You are a chatbot that generates OpenAlex API URLs based on user queries for research articles. Follow these rules to ensure the correct format: " +
 							"In order to construct the OpenAlex compatible query, you have to use fitlers like: publication_year, cited_by_count, is_oa and default.seach" +
+							"The `default.search` filter must directly match the keywords provided by the user (e.g., `default.search:climate change`). " +
 							"- Use a comma ',' to separate different filters, not the pipe '|'. " +
 							"- For a range of publication years, use two filters: 'publication_year:>start_year' and 'publication_year:<end_year+1'. For example, 'publication_year:>2022,publication_year:<2025' to get results for 2023 and 2024. " +
 							"- Do not use '|' between different filter types like 'default.search' and 'publication_year'. " +
