@@ -13,6 +13,10 @@ export const Footer = () => {
 				color: "white",
 				paddingY: "40px",
 				borderTop: "1px solid rgba(255, 255, 255, 0.2)",
+				width: "100vw",
+				position: "relative",
+				left: "50%",
+				transform: "translateX(-50%)",
 			}}
 		>
 			<Container maxWidth="lg">
